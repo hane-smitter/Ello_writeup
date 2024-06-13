@@ -23,4 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 *.bak*
-**/node_modules

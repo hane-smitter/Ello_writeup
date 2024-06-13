@@ -1,0 +1,67 @@
+.menuContainer {
+    --bar-offset-top-ratio: 3;
+    --bar-width: 28px;
+    --bar-height: 2px;
+    --aligned-bars-gen-height: #{calc((var(--bar-height) * (var(--bar-offset-top-ratio) - 1)) + (var(--bar-height) * 2))};
+
+    width: max(var(--bar-width), var(--aligned-bars-gen-height));
+    height: max(var(--bar-width), var(--aligned-bars-gen-height));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    :global {
+        .bar {
+            height: var(--bar-height);
+            width: var(--bar-width);
+            border-radius: 999rem;
+            position: relative;
+            background-color: rgba(0, 0, 0);
+            display: block;
+
+            &::after,
+            &::before {
+                content: "";
+                height: 100%;
+                width: 100%;
+                background-color: rgba(0, 0, 0);
+                position: absolute;
+                left: 0;
+                transform-origin: 50% 50%;
+                // transition:
+                //     transform 200ms ease-out,
+                //     opacity 200ms ease-out;
+                transition-property: transform, opacity, top;
+                transition-duration: 200ms;
+                transition-timing-function: ease-out;
+            }
+            &::after {
+                top: calc(100% * var(--bar-offset-top-ratio));
+            }
+            &::before {
+                top: calc(100% * var(--bar-offset-top-ratio) * -1);
+            }
+        }
+
+        #menu-chck-bx[type="checkbox"] {
+            display: none;
+            position: absolute;
+            z-index: -999;
+            pointer-events: none;
+        }
+        #menu-chck-bx[type="checkbox"]:checked ~ .bar::after,
+        #menu-chck-bx[type="checkbox"]:checked ~ .bar::before {
+            top: 0;
+        }
+        #menu-chck-bx[type="checkbox"]:checked ~ .bar::after {
+            transform: rotateZ(45deg);
+        }
+        #menu-chck-bx[type="checkbox"]:checked ~ .bar::before {
+            transform: rotateZ(-45deg);
+        }
+        #menu-chck-bx[type="checkbox"]:checked ~ .bar {
+            background-color: transparent;
+        }
+    }
+}
