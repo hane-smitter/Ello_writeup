@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { type Attributes, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useQuery, gql } from "@apollo/client";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const GET_BOOKS = gql`
   query Books {
@@ -28,9 +30,8 @@ type Books = {
 function Search() {
   const [open, setOpen] = useState<boolean>(false);
   const [inpOptions, setInpOptions] = useState<Books["books"]>([]);
-  const { loading, error, data } = useQuery<Books>(GET_BOOKS);
+  const { loading, data } = useQuery<Books>(GET_BOOKS);
 
-  console.log({ inpOptions });
   //   console.group("Fetch data logic");
   //   console.log("Fetched DATA:: ", data);
   //   console.groupEnd();
@@ -42,8 +43,6 @@ function Search() {
     //   return undefined;
     // }
 
-    // console.log("loading status: ", loading);
-    // console.log("Data value: ", data);
     if (mounted && !loading) {
       setInpOptions([...(data?.books || [])]);
     }
@@ -56,7 +55,7 @@ function Search() {
   return (
     <div>
       <Autocomplete
-        sx={{ width: 300 }}
+        sx={{ minWidth: "250px" }}
         open={open}
         onOpen={() => {
           setOpen(true);
@@ -68,10 +67,50 @@ function Search() {
         getOptionLabel={(option) => option.title}
         options={inpOptions}
         loading={loading}
+        renderOption={(props, option) => {
+          const { key, ...restProps } = props as Attributes;
+
+          return (
+            <Box
+              component="li"
+              sx={{ "& > .bk-image": { ml: -1, mr: 0.8, flexShrink: 1 } }}
+              {...restProps}
+              key={uuidv4()}
+            >
+              <img
+                className="bk-image"
+                height="50"
+                width="50"
+                src={`/${option.coverPhotoURL}`}
+                alt={option.title}
+                key={uuidv4()}
+              />
+
+              <span style={{ fontSize: "13px" }} key={uuidv4()}>
+                <Box
+                  component="span"
+                  sx={{ display: "block", fontWeight: 600 }}
+                >
+                  {option.title}
+                </Box>
+                <Box
+                  component="span"
+                  sx={{
+                    typography: "caption",
+                    fontStyle: "italic",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  By&nbsp;{option.author}
+                </Box>
+              </span>
+            </Box>
+          );
+        }}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Books"
+            label="Search a book title"
             InputProps={{
               ...params.InputProps,
               endAdornment: (
