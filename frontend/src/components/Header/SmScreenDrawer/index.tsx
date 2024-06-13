@@ -6,12 +6,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { styled } from "@mui/material/styles";
+import Link from "@mui/material/Link";
+
 import links from "../Links";
 
-function SmScreen({
+const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+
+function SmScreenDrawer({
   mobileDrawerOpen,
   handleMobileDrawer,
 }: {
@@ -26,29 +30,17 @@ function SmScreen({
       <Box
         sx={{ width: 250 }}
         role="presentation"
-        //   onClick={() => setDrawerOpen(false)}
+        onClick={() => handleMobileDrawer(false)}
       >
+        <Offset />
         <List>
-          {links.map(({ name }, index) => (
+          {links.map(({ name, href }, index) => (
             <ListItem key={name} disablePadding>
-              <ListItemButton>
+              <ListItemButton LinkComponent={Link} href={href} target="_blank">
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {links.map(({ name }, index) => (
-            <ListItem key={name} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={name} />
+                <ListItemText primary={name} sx={{ color: "common.black" }} />
               </ListItemButton>
             </ListItem>
           ))}
@@ -58,4 +50,4 @@ function SmScreen({
   );
 }
 
-export default SmScreen;
+export default SmScreenDrawer;

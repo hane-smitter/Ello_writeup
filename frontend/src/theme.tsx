@@ -4,18 +4,19 @@ import { red } from "@mui/material/colors";
 const theme = createTheme({
   palette: {
     primary: {
-      100: "#CFFAFA", // Turquoise light
+      light: "#CFFAFA", // Turquoise light
       main: "#5ACCCC", // Turquoise
       600: "#53C2C2", // Turquoise dark 1
-      700: "#28B8B8", // Turquoise dark 2
+      dark: "#28B8B8", // Turquoise dark 2
     },
     secondary: {
-      100: "#FFE6DC", // Orange Pastel
+      light: "#FFE6DC", // Orange Pastel
       main: "#F76434", // Orange Red
     },
     error: {
       main: red.A400,
     },
+    common: { black: "#2c3232" },
   },
   components: {
     MuiCssBaseline: {

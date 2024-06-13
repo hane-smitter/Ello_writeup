@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,7 +8,8 @@ import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
 
 import styles from "./styles.module.scss";
-import SmScreen from "./SmScreen";
+import SmScreenDrawer from "./SmScreenDrawer";
+import NavLinks from "./NavLinks";
 
 function Header() {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -38,10 +39,13 @@ function Header() {
     }
   }, [matches]);
 
+  const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+
   return (
     <>
-      <AppBar>
-        <Toolbar>
+      <AppBar sx={{ backgroundColor: "common.white" }} elevation={1}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <img src="/ello-logo.svg" alt="ello logo" width="54px" />
           {/* <IconButton
             size="large"
             edge="start"
@@ -53,21 +57,20 @@ function Header() {
           </IconButton> */}
 
           {isSmallScreen ? (
-            <IconButton onClick={() => setMobileDrawerOpen(true)}>
-              <Box component="label" htmlFor="menu-chck-bx">
-                <Box component="span" className={styles.menuContainer}>
-                  <input type="checkbox" id="menu-chck-bx" ref={chckbxRef} />
-                  <Box className="bar" component="span"></Box>
-                </Box>
+            <IconButton onClick={() => handleMobileDrawer(true)}>
+              <Box component="span" className={styles.menuContainer}>
+                <input type="checkbox" id="menu-chck-bx" ref={chckbxRef} />
+                <Box className="bar" component="span"></Box>
               </Box>
             </IconButton>
           ) : (
-            "A normal node rendered"
+            <NavLinks />
           )}
         </Toolbar>
       </AppBar>
+      <Offset />
 
-      <SmScreen
+      <SmScreenDrawer
         mobileDrawerOpen={mobileDrawerOpen}
         handleMobileDrawer={handleMobileDrawer}
       />
