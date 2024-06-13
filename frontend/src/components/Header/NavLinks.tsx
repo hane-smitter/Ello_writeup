@@ -8,7 +8,7 @@ function NavLinks() {
     <Box component="nav" role="presentation">
       <Box component="ol" sx={{ display: "flex" }}>
         {links.map((lnk) => (
-          <Box component="li" sx={{ listStyle: "none" }}>
+          <Box component="li" sx={{ listStyle: "none" }} key={lnk.name}>
             <Link
               href={lnk.href}
               target={"_blank"}

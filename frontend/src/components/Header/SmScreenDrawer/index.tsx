@@ -22,7 +22,6 @@ function SmScreenDrawer({
   mobileDrawerOpen: boolean;
   handleMobileDrawer: (boolStatus: boolean) => void;
 }) {
-  console.log({ mobileDrawerOpen });
   //   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   return (

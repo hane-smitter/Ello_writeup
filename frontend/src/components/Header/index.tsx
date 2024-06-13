@@ -30,11 +30,8 @@ function Header() {
 
   useEffect(() => {
     if (matches) {
-      console.log("is matche1: ", matches);
       setIsSmallScreen(true);
     } else {
-      console.log("is matche2: ", matches);
-
       setIsSmallScreen(false);
     }
   }, [matches]);
