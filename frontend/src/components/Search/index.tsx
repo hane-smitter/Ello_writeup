@@ -1,56 +1,23 @@
-import { type Attributes, useEffect, useState } from "react";
+import { type Attributes, memo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useQuery, gql } from "@apollo/client";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-const GET_BOOKS = gql`
-  query Books {
-    books {
-      author
-      coverPhotoURL
-      readingLevel
-      title
-    }
-  }
-`;
+import type { Books, Unpack } from "../Content";
 
-type Books = {
-  books: {
-    __typename: string;
-    author: string;
-    coverPhotoURL: string;
-    readingLevel: string;
-    title: string;
-  }[];
-};
-
-function Search() {
+function Search({
+  books,
+  loading,
+  addBookToReadList,
+}: {
+  books: Books["books"];
+  loading: boolean;
+  addBookToReadList: (book: Unpack<Books["books"]>) => void;
+}) {
   const [open, setOpen] = useState<boolean>(false);
-  const [inpOptions, setInpOptions] = useState<Books["books"]>([]);
-  const { loading, data } = useQuery<Books>(GET_BOOKS);
-
-  //   console.group("Fetch data logic");
-  //   console.log("Fetched DATA:: ", data);
-  //   console.groupEnd();
-
-  useEffect(() => {
-    let mounted = true;
-
-    // if (loading) {
-    //   return undefined;
-    // }
-
-    if (mounted && !loading) {
-      setInpOptions([...(data?.books || [])]);
-    }
-
-    return () => {
-      mounted = false;
-    };
-  }, [loading, data?.books]);
+  // const [inpOptions, setInpOptions] = useState<Books["books"]>([]);
 
   return (
     <div>
@@ -65,7 +32,7 @@ function Search() {
         }}
         isOptionEqualToValue={(option, value) => option.title === value.title}
         getOptionLabel={(option) => option.title}
-        options={inpOptions}
+        options={books}
         loading={loading}
         renderOption={(props, option) => {
           const { key, ...restProps } = props as Attributes;
@@ -124,9 +91,12 @@ function Search() {
             }}
           />
         )}
+        onChange={(e, val, rsn) => {
+          if (val) addBookToReadList(val);
+        }}
       />
     </div>
   );
 }
 
-export default Search;
+export default memo(Search);

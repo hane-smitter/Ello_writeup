@@ -5,16 +5,14 @@ import { CssBaseline } from "@mui/material";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import theme from "./theme";
-import Search from "./components/Search";
+import Content from "./components/Content";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header />
-      <main style={{ paddingBlockStart: 20 }}>
-        <Search />
-      </main>
+      <Content />
       <Footer />
     </ThemeProvider>
   );
